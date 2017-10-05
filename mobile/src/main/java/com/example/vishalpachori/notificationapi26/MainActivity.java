@@ -3,6 +3,8 @@ package com.example.vishalpachori.notificationapi26;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
+
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
                                 .setContentText("You've received new messages.")
                                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                                 .setChannelId(NOTIFICATION_CHANNEL_ID)
+                                
+                                .addAction(R.drawable.ic_notifications_black_24dp, "Call", pIntent)
+                                .addAction(R.drawable.ic_notifications_black_24dp, "Mark As Read", pIntent)
                                 .build();
 // Issue the notification.
                         notificationManager.notify(NOTIFICATION_ID, notification);
